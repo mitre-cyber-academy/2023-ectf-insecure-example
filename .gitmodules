@@ -1,0 +1,6 @@
+[submodule "fob/lib/tiny-AES-c"]
+	path = fob/lib/tiny-AES-c
+	url = git@github.com:kokke/tiny-AES-c.git
+[submodule "car/lib/tiny-AES-c"]
+	path = car/lib/tiny-AES-c
+	url = git@github.com:kokke/tiny-AES-c.git

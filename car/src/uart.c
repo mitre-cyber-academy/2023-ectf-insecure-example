@@ -67,7 +67,7 @@ void uart_init(void) {
  * @return true if there is data available.
  * @return false if there is no data available.
  */
-bool uart_avail(uint32_t interface) { return UARTCharsAvail(interface); }
+bool uart_avail(uint32_t uart) { return UARTCharsAvail(uart); }
 
 /**
  * @brief Read a byte from a UART interface.

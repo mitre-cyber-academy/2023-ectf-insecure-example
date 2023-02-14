@@ -28,7 +28,8 @@ def package(package_name, car_id, feature_number):
     # Create package to match defined structure on fob
     package_message_bytes = (
         str.encode(car_id + car_id_pad)
-        + feature_number.to_bytes(1, "little")
+        # encode feature number as string and pad to 3 bytes
+        + str.encode(str(feature_number).zfill(3))
         + str.encode("\n")
     )
 

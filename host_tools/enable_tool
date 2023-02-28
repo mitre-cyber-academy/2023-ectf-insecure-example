@@ -14,7 +14,7 @@
 
 import socket
 import argparse
-
+import sys
 
 # @brief Function to send commands to enable a feature on a fob
 # @param fob_bridge, bridged serial connection to fob
@@ -45,7 +45,7 @@ def enable(fob_bridge, package_name):
 
         print(enable_success)
     except socket.timeout:
-        print("Failed to enable feature")
+        sys.exit("Failed to enable feature")
 
     return 0
 

@@ -1,0 +1,4 @@
+host_tools/enable_tool eol=lf
+host_tools/package_tool eol=lf
+host_tools/pair_tool eol=lf
+host_tools/unlock_tool eol=lf

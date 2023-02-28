@@ -114,6 +114,8 @@ int main(void)
 
     saveFobState(&fob_state_ram);
   }
+#else
+  fob_state_ram.paired = FLASH_UNPAIRED;
 #endif
 
   if (fob_state_flash->paired == FLASH_PAIRED)
@@ -160,6 +162,11 @@ int main(void)
   GPIOPinTypeGPIOInput(GPIO_PORTF_BASE, GPIO_PIN_4);
   GPIOPadConfigSet(GPIO_PORTF_BASE, GPIO_PIN_4, GPIO_STRENGTH_4MA,
                    GPIO_PIN_TYPE_STD_WPU);
+
+  // Change LED color: white
+  GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1, GPIO_PIN_1); // r
+  GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_2, GPIO_PIN_2); // b
+  GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3, GPIO_PIN_3); // g
 
   // Declare a buffer for reading and writing to UART
   uint8_t uart_buffer[10];
@@ -233,7 +240,7 @@ void pairFob(FLASH_DATA *fob_state_ram)
   {
     int16_t bytes_read;
     uint8_t uart_buffer[8];
-    uart_write(HOST_UART, (uint8_t *)"Enter pin: ", 11);
+    uart_write(HOST_UART, (uint8_t *)"P", 1);
     bytes_read = uart_readline(HOST_UART, uart_buffer);
 
     if (bytes_read == 6)

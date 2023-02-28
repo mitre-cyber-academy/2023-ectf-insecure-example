@@ -14,6 +14,8 @@
 
 import socket
 import argparse
+import sys
+import time
 
 
 # @brief Function to send commands to pair
@@ -26,20 +28,29 @@ def pair(unpaired_fob_bridge, paired_fob_bridge, pair_pin):
     # Connect to both sockets for serial
     unpaired_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     unpaired_sock.connect(("ectf-net", int(unpaired_fob_bridge)))
+    unpaired_sock.settimeout(2)
 
     paired_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     paired_sock.connect(("ectf-net", int(paired_fob_bridge)))
+    paired_sock.settimeout(2)
 
     # Send pair commands to both fobs
     unpaired_sock.send(b"pair\n")
     paired_sock.send(b"pair\n")
 
+    # Receive ack from the paired fob
+    try:
+        ack = paired_sock.recv(1)
+        while ack != b"P":
+            ack = paired_sock.recv(1)
+    except socket.timeout:
+        sys.exit("Failed to pair fob (1)")
+
     # Send pin to the paired fob
+    time.sleep(0.2)
     pair_pin_bytes = str.encode(pair_pin + "\n")
     paired_sock.send(pair_pin_bytes)
 
-    # Set timeout for if pairing fails
-    unpaired_sock.settimeout(5)
     # Try to receive data - if failed, pairing failed
     try:
         pair_success = unpaired_sock.recv(6)
@@ -48,7 +59,7 @@ def pair(unpaired_fob_bridge, paired_fob_bridge, pair_pin):
 
         print(pair_success)
     except socket.timeout:
-        print("Failed to pair fob")
+        sys.exit("Failed to pair fob (2)")
 
     return 0
 

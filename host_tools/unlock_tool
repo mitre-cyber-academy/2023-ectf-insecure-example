@@ -14,7 +14,7 @@
 
 import socket
 import argparse
-
+import sys
 
 # @brief Function to monitor unlocking car
 # @param car_bridge, bridged serial connection to car
@@ -38,7 +38,7 @@ def unlock(car_bridge):
 
     # If no data receive, unlock failed
     if len(unlock_received) == 0:
-        print("Failed to unlock")
+        sys.exit("Failed to unlock")
     # If data received, print out unlock message and features
     else:
         print(unlock_received)

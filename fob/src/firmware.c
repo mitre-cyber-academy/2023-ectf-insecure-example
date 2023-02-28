@@ -283,7 +283,7 @@ void enableFeature(FLASH_DATA *fob_state_ram)
 {
   if (fob_state_ram->paired == FLASH_PAIRED)
   {
-    uint8_t uart_buffer[20];
+    uint8_t uart_buffer[24];
     uart_readline(HOST_UART, uart_buffer);
 
     ENABLE_PACKET *enable_message = (ENABLE_PACKET *)uart_buffer;
@@ -292,6 +292,8 @@ void enableFeature(FLASH_DATA *fob_state_ram)
     {
       return;
     }
+
+    enable_message->feature = (uint8_t)atoi((char *)uart_buffer + 8);
 
     // Feature list full
     if (fob_state_ram->feature_info.num_active == NUM_FEATURES)
